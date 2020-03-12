@@ -8,8 +8,8 @@ class Students extends Component {
   state = {
     studentData: [],
     blockToSort: '',
-    sortByAscOrDesc: 'asc',
-    selectedSortBy: '',
+    orderByAscOrDesc: 'asc',
+    sortBy: 'startingCohort',
     isLoaded: false,
     studentToAdd: {}
   };
@@ -23,7 +23,11 @@ class Students extends Component {
       this.fetchStudentData();
     }
 
-    if (prevState.sortByAscOrDesc !== this.state.sortByAscOrDesc) {
+    if (prevState.orderByAscOrDesc !== this.state.orderByAscOrDesc) {
+      this.fetchStudentData();
+    }
+
+    if (prevState.sortBy !== this.state.sortBy) {
       this.fetchStudentData();
     }
   };
@@ -32,10 +36,14 @@ class Students extends Component {
     axios
       .get(
         'https://nc-student-tracker.herokuapp.com/api/students?graduated=false',
-        { params: { order: this.state.sortByAscOrDesc } }
+        {
+          params: {
+            order: this.state.orderByAscOrDesc,
+            sort_by: this.state.sortBy
+          }
+        }
       )
       .then(({ data }) => {
-        // console.log(data);
         this.setState({ studentData: data.students, isLoaded: true });
       });
   };
@@ -49,24 +57,26 @@ class Students extends Component {
   };
 
   toggleOrderBy = event => {
-    if (this.state.sortByAscOrDesc === 'asc') {
-      this.setState({ sortByAscOrDesc: 'desc' });
+    if (this.state.orderByAscOrDesc === 'asc') {
+      this.setState({ orderByAscOrDesc: 'desc' });
     } else {
-      this.setState({ sortByAscOrDesc: 'asc' });
+      this.setState({ orderByAscOrDesc: 'asc' });
     }
+  };
 
-    // this.setState({ sortByAscOrDesc: event.target.value });
+  changeSortBy = sortByQuery => {
+    this.setState({ sortBy: sortByQuery });
   };
 
   render() {
-    console.log(this.state.sortByAscOrDesc);
     return (
       <section>
         <h2>Students</h2>
         <AddStudent postStudent={this.postStudent} />
         <SortStudent
           toggleOrderBy={this.toggleOrderBy}
-          ascOrDesc={this.state.sortByAscOrDesc}
+          ascOrDesc={this.state.orderByAscOrDesc}
+          changeSortBy={this.changeSortBy}
         />
         {this.state.isLoaded ? (
           <StudentList studentData={this.state.studentData} />
