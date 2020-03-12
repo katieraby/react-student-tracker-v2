@@ -1,6 +1,6 @@
 body {
   text-align: center;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 header {
@@ -51,6 +51,18 @@ label {
 .card-segment {
   display: grid;
   grid-template-rows: 50% 50%;
+}
+
+.add-student-container {
+  padding: 20px;
+  display: inline-block;
+  background-color: #acd8aa;
+  color: #fff;
+  margin: 10px 0px;
+}
+
+label {
+  margin-right: 20px;
 }
 
 ul {

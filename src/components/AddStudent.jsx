@@ -1,41 +1,39 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 class AddStudent extends Component {
   state = {
-    name: '',
+    name: "",
     startingCohort: 0
   };
 
   handleInput = event => {
-    /*
-    event.target.name equal to the name of the state we want to set
-    event.target.value which is going to be the input on change which we can use to set the state with
-    */
-
     this.setState({ [event.target.name]: event.target.value });
   };
 
   handleSubmit = event => {
     event.preventDefault();
-
     const objToPost = { ...this.state };
-
-    console.log(objToPost);
+    this.props.postStudent(objToPost);
+    this.setState({ name: "", startingCohort: 0 });
   };
 
   render() {
-    console.log(this.state.name);
-    console.log(this.state.startingCohort);
     return (
       <div className="add-student-container">
         <form onSubmit={this.handleSubmit}>
           <label>
             Name:
-            <input name="name" type="text" onChange={this.handleInput}></input>
+            <input
+              value={this.state.name}
+              name="name"
+              type="text"
+              onChange={this.handleInput}
+            ></input>
           </label>
           <label>
             Starting Cohort:
             <input
+              value={this.state.startingCohort}
               name="startingCohort"
               type="number"
               onChange={this.handleInput}
