@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import axios from 'axios';
-import StudentList from './StudentList';
-import AddStudent from './AddStudent';
-import SortStudent from './SortStudent';
+import React, { Component } from "react";
+import axios from "axios";
+import StudentList from "./StudentList";
+import AddStudent from "./AddStudent";
+import SortStudent from "./SortStudent";
 
 class Students extends Component {
   state = {
     studentData: [],
-    blockToSort: '',
-    orderByAscOrDesc: 'asc',
-    sortBy: 'startingCohort',
+    blockToSort: "",
+    orderByAscOrDesc: "asc",
+    sortBy: "startingCohort",
     isLoaded: false,
     studentToAdd: {}
   };
@@ -35,7 +35,7 @@ class Students extends Component {
   fetchStudentData = () => {
     axios
       .get(
-        'https://nc-student-tracker.herokuapp.com/api/students?graduated=false',
+        "https://nc-student-tracker.herokuapp.com/api/students?graduated=false",
         {
           params: {
             order: this.state.orderByAscOrDesc,
@@ -50,17 +50,17 @@ class Students extends Component {
 
   postStudent = objToPost => {
     axios
-      .post('https://nc-student-tracker.herokuapp.com/api/students', objToPost)
+      .post("https://nc-student-tracker.herokuapp.com/api/students", objToPost)
       .then(({ data }) => {
         this.setState({ studentToAdd: data });
       });
   };
 
   toggleOrderBy = event => {
-    if (this.state.orderByAscOrDesc === 'asc') {
-      this.setState({ orderByAscOrDesc: 'desc' });
+    if (this.state.orderByAscOrDesc === "asc") {
+      this.setState({ orderByAscOrDesc: "desc" });
     } else {
-      this.setState({ orderByAscOrDesc: 'asc' });
+      this.setState({ orderByAscOrDesc: "asc" });
     }
   };
 
@@ -79,7 +79,10 @@ class Students extends Component {
           changeSortBy={this.changeSortBy}
         />
         {this.state.isLoaded ? (
-          <StudentList studentData={this.state.studentData} />
+          <>
+            <h3>Total Students: {this.state.studentData.length}</h3>
+            <StudentList studentData={this.state.studentData} />
+          </>
         ) : null}
       </section>
     );
